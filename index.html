@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday, Ann!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --kuning: #F3DE8A;
+  --kuning-muda: #FFF6D6;
+  --krem: #FFFBEF;
+  --kuning-tua: #D9B93F;
+  --kuning-kado: #EBCB5E;
+  --hijau: #7DAA6B;
+  --teks: #4A4A3A;
+  --teks-lembut: #7A7860;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--krem);
+  color: var(--teks);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+h1, h2, .btn, .kicker, .besar { font-family: 'Baloo 2', 'Nunito', sans-serif; }
+
+/* ---------- SCENE ---------- */
+#app { position: relative; min-height: 100vh; min-height: 100dvh; }
+
+.scene {
+  position: absolute;
+  inset: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 20px 40px;
+  background: linear-gradient(180deg, var(--kuning-muda) 0%, var(--krem) 70%);
+  opacity: 0;
+  overflow-y: auto;
+}
+.scene.aktif { display: flex; animation: masuk 0.6s ease forwards; }
+@keyframes masuk {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.isi {
+  width: 100%;
+  max-width: 560px;
+  margin: auto;
+  text-align: center;
+}
+.isi.lebar { max-width: 900px; }
+
+/* ---------- TITIK PROGRES ---------- */
+.dots {
+  position: fixed;
+  top: 16px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 8px;
+  z-index: 40;
+}
+.dots span {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--kuning);
+  transition: all 0.3s;
+}
+.dots span.on { background: var(--kuning-tua); width: 24px; border-radius: 6px; }
+
+/* ---------- TEKS UMUM ---------- */
+.kicker { color: var(--teks-lembut); font-size: 1.05rem; }
+h1 {
+  font-size: clamp(1.8rem, 7vw, 3rem);
+  line-height: 1.2;
+  margin: 8px 0 12px;
+  font-weight: 700;
+}
+.nama {
+  display: inline-block;
+  background: var(--kuning);
+  padding: 2px 16px;
+  border-radius: 14px;
+  margin-top: 8px;
+}
+.judul { font-size: clamp(1.6rem, 6vw, 2.2rem); line-height: 1.25; margin-bottom: 6px; }
+.sub { color: var(--teks-lembut); margin-bottom: 24px; font-size: 1.05rem; }
+.hint { font-size: 0.82rem; color: var(--teks-lembut); margin-bottom: 26px; }
+.hint code { background: var(--kuning-muda); padding: 1px 6px; border-radius: 6px; }
+
+/* ---------- TOMBOL ---------- */
+.btn {
+  display: inline-block;
+  background: var(--kuning);
+  color: var(--teks);
+  border: none;
+  padding: 12px 28px;
+  border-radius: 999px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 0 var(--kuning-tua);
+  transition: transform 0.15s, box-shadow 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--kuning-tua); }
+.btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--kuning-tua); }
+.btn.ghost { background: transparent; box-shadow: none; border: 2px solid var(--kuning-tua); }
+
+/* ---------- TULIP HERO ---------- */
+.tulip-row { display: flex; gap: 6px; justify-content: center; align-items: flex-end; margin-bottom: 10px; }
+.tulip { width: 70px; height: 140px; transform-origin: bottom center; animation: goyang 3s ease-in-out infinite; }
+.t1 { transform: scale(0.85); }
+.t2 { width: 90px; height: 180px; animation-delay: 0.4s; }
+.t3 { transform: scale(0.85); animation-delay: 0.8s; }
+@keyframes goyang { 0%,100% { rotate: -4deg; } 50% { rotate: 4deg; } }
+
+/* ---------- KADO ---------- */
+.kado {
+  position: relative;
+  display: block;
+  width: 190px; height: 190px;
+  margin: 10px auto 24px;
+  background: none; border: none; cursor: pointer;
+  animation: lompat 1.6s ease-in-out infinite;
+  -webkit-tap-highlight-color: transparent;
+}
+@keyframes lompat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+.kado span { position: absolute; display: block; }
+.kado .badan {
+  left: 15px; right: 15px; bottom: 0; height: 115px;
+  background: var(--kuning-kado); border-radius: 0 0 14px 14px;
+  box-shadow: inset 0 -10px 0 rgba(0,0,0,0.06);
+}
+.kado .tutup {
+  left: 5px; right: 5px; top: 42px; height: 36px;
+  background: #F3D970; border-radius: 10px;
+  z-index: 3;
+  transform-origin: left bottom;
+  transition: transform 0.7s cubic-bezier(.5,-0.4,.4,1.3), opacity 0.6s 0.2s;
+}
+.kado .pita-v {
+  left: 50%; width: 26px; margin-left: -13px; bottom: 0; height: 115px;
+  background: #A9CC97;
+}
+.kado .pita-h {
+  left: 5px; right: 5px; top: 52px; height: 0; z-index: 4;
+}
+.kado .simpul {
+  left: 50%; top: 18px; margin-left: -22px; width: 44px; height: 30px;
+  z-index: 4;
+  background: #8DBB7A;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  transition: transform 0.7s cubic-bezier(.5,-0.4,.4,1.3), opacity 0.6s 0.2s;
+}
+.kado .cahaya {
+  left: 50%; top: 60px; width: 10px; height: 10px; margin-left: -5px;
+  border-radius: 50%; background: #fff6c8; opacity: 0; z-index: 1;
+  box-shadow: 0 0 40px 30px rgba(255, 240, 160, 0.9);
+  transition: opacity 0.5s 0.3s;
+}
+.kado.buka { animation: none; cursor: default; }
+.kado.buka .tutup { transform: translate(-28px, -70px) rotate(-38deg); opacity: 0; }
+.kado.buka .simpul { transform: translate(-10px, -80px) rotate(-20deg); opacity: 0; }
+.kado.buka .cahaya { opacity: 1; }
+
+.nw { white-space: nowrap; }
+.reveal { animation: masuk 0.7s ease forwards; }
+.besar { font-size: clamp(1.7rem, 7vw, 2.4rem); font-weight: 800; margin: 6px 0 22px; line-height: 1.25; }
+
+/* ---------- AMPLOP ---------- */
+.amplop {
+  position: relative;
+  display: block;
+  width: 230px; height: 150px;
+  margin: 20px auto 0;
+  background: none; border: none; cursor: pointer;
+  animation: lompat 1.8s ease-in-out infinite;
+  -webkit-tap-highlight-color: transparent;
+}
+.amplop span { position: absolute; display: block; }
+.a-belakang { inset: 0; background: #EBCB5E; border-radius: 10px; }
+.a-surat {
+  left: 14px; right: 14px; top: 12px; height: 110px;
+  background: #fff; border-radius: 6px;
+  transition: transform 0.6s 0.25s ease;
+}
+.a-depan {
+  inset: 0; border-radius: 10px;
+  background:
+    linear-gradient(to top right, transparent 49%, rgba(0,0,0,0.05) 50%) left / 50% 100% no-repeat,
+    linear-gradient(to top left,  transparent 49%, rgba(0,0,0,0.05) 50%) right / 50% 100% no-repeat,
+    #F3D970;
+  clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
+}
+.a-tutup {
+  left: 0; right: 0; top: 0; height: 80px;
+  background: #E5C24F;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top;
+  transition: transform 0.5s ease;
+  z-index: 2;
+}
+.a-hati { left: 50%; top: 52px; margin-left: -14px; font-size: 1.7rem; z-index: 3; transition: opacity 0.3s; }
+.amplop.buka { animation: none; }
+.amplop.buka .a-tutup { transform: rotateX(180deg); z-index: 0; }
+.amplop.buka .a-surat { transform: translateY(-60px); }
+.amplop.buka .a-hati { opacity: 0; }
+
+/* ---------- SURAT ---------- */
+.surat {
+  background: #fff;
+  border-radius: 8px;
+  padding: 30px 24px 26px;
+  text-align: left;
+  box-shadow: 0 10px 30px rgba(120, 110, 60, 0.2);
+  border-top: 6px solid var(--kuning);
+  animation: masuk 0.7s ease forwards;
+}
+.surat h2 { margin-bottom: 14px; font-size: 1.6rem; }
+.surat p { margin-bottom: 14px; }
+.surat .ttd { font-family: 'Baloo 2', sans-serif; font-size: 1.25rem; font-weight: 700; margin: 18px 0 22px; text-align: right; }
+.surat .btn { display: block; margin: 0 auto; }
+
+/* ---------- GALERI ---------- */
+.galeri { display: flex; flex-wrap: wrap; gap: 26px; justify-content: center; margin-bottom: 34px; }
+.polaroid {
+  background: #fff;
+  padding: 12px 12px 16px;
+  border-radius: 6px;
+  box-shadow: 0 8px 20px rgba(120, 110, 60, 0.18);
+  width: 230px;
+  transition: transform 0.25s;
+}
+.r-kiri { transform: rotate(-3deg); }
+.r-kanan { transform: rotate(3deg); }
+.polaroid:hover { transform: rotate(0deg) scale(1.04); }
+.foto-box { position: relative; width: 100%; aspect-ratio: 1 / 1; background: var(--kuning-muda); overflow: hidden; border-radius: 3px; }
+.foto-box img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.placeholder {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; padding: 12px;
+  color: var(--teks-lembut); font-size: 0.95rem;
+}
+.polaroid figcaption { margin-top: 10px; font-weight: 600; font-size: 0.95rem; }
+
+/* ---------- PENUTUP ---------- */
+.card {
+  background: var(--kuning-muda);
+  border: 2px dashed var(--kuning-tua);
+  border-radius: 24px;
+  padding: 26px 22px;
+  margin: 18px 0 26px;
+}
+.card p + p { margin-top: 12px; }
+.terima-kasih { font-family: 'Baloo 2', sans-serif; font-size: 1.3rem; font-weight: 700; line-height: 1.4; }
+
+/* ---------- HUJAN TULIP ---------- */
+#hujan { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 50; }
+.tulip-jatuh { position: absolute; top: -90px; animation: jatuh linear forwards; }
+@keyframes jatuh { to { transform: translateY(115vh) rotate(360deg); } }
+
+@media (max-width: 480px) {
+  .polaroid { width: 210px; }
+  .surat { padding: 26px 18px 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tulip, .kado, .amplop { animation: none; }
+}
+
+</style>
+</head>
+<body>
+
+  <!-- Definisi bunga tulip (dipakai berulang) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="tulip" viewBox="0 0 60 120">
+      <path d="M30 62 C30 85 30 100 30 118" stroke="#7DAA6B" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M30 108 C12 100 8 82 10 72 C24 78 30 92 30 108Z" fill="#8DBB7A"/>
+      <path d="M30 100 C46 94 52 80 50 70 C38 74 30 86 30 100Z" fill="#7DAA6B"/>
+      <path d="M30 64 C14 62 10 40 12 22 C22 28 28 40 30 64Z" fill="#F0D060"/>
+      <path d="M30 64 C46 62 50 40 48 22 C38 28 32 40 30 64Z" fill="#E8C64D"/>
+      <path d="M30 66 C20 58 20 34 30 16 C40 34 40 58 30 66Z" fill="#F7E08A"/>
+    </symbol>
+  </svg>
+
+  <!-- Titik progres -->
+  <nav class="dots" id="dots" aria-hidden="true"></nav>
+
+  <main id="app">
+
+    <!-- ========== TAHAP 1: UCAPAN SINGKAT ========== -->
+    <section class="scene aktif" data-scene="0">
+      <div class="isi">
+        <div class="tulip-row" aria-hidden="true">
+          <svg class="tulip t1"><use href="#tulip"/></svg>
+          <svg class="tulip t2"><use href="#tulip"/></svg>
+          <svg class="tulip t3"><use href="#tulip"/></svg>
+        </div>
+        <p class="kicker">Hari ini, semesta pernah memilihmu untuk hadir.</p>
+        <h1>Selamat Ulang Tahun,<br><span class="nama">Rheyvanda Shevta Ersananda!</span></h1>
+        <p class="sub">Ada sesuatu kecil buat kamu. Yuk lanjut.</p>
+        <button class="btn next">Next →</button>
+      </div>
+    </section>
+
+    <!-- ========== TAHAP 2: KADO ========== -->
+    <section class="scene" data-scene="1">
+      <div class="isi">
+        <h2 class="judul" id="judulKado">Ada kado buat kamu 🎁</h2>
+        <p class="sub" id="petunjukKado">Klik kadonya yaa sayang</p>
+
+        <button class="kado" id="kado" aria-label="Buka kado">
+          <span class="tutup"></span>
+          <span class="badan"></span>
+          <span class="pita-v"></span>
+          <span class="pita-h"></span>
+          <span class="simpul"></span>
+          <span class="cahaya"></span>
+        </button>
+
+        <div class="reveal" id="revealKado" hidden>
+          <p class="besar">Special your day, <span class="nw">sayang 💛</span></p>
+          <button class="btn next">Ada yang lain nih →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== TAHAP 3: SURAT ========== -->
+    <section class="scene" data-scene="2">
+      <div class="isi">
+        <div id="amplop-wrap">
+          <h2 class="judul">Ada surat dari aku ✉️</h2>
+          <p class="sub">Klik amplopnya</p>
+          <button class="amplop" id="amplop" aria-label="Buka surat">
+            <span class="a-belakang"></span>
+            <span class="a-surat"></span>
+            <span class="a-depan"></span>
+            <span class="a-tutup"></span>
+            <span class="a-hati">💛</span>
+          </button>
+        </div>
+
+        <article class="surat" id="surat" hidden>
+          <h2>Buat kamu, <span class="nw">Ann 💛</span></h2>
+
+          <p>
+            Selamat ulang tahun, sayang. Hari ini kamu sudah 21 Tahun dan hari ini juga hari yang spesial buat kamu
+            bukan cuma hari ini, tapi setiap hari.
+          </p>
+          <p>
+            Terima kasih sudah jadi kamu, yang sabar, yang perhatian,
+            yang bisa bikin perhatian kecil ke aku dan semua orang, yang selalu menyambut ketika aku pulang, dan yang selalu ada
+            waktu aku butuh. Banyak hal kecil dari kamu yang mungkin kamu nggak
+            sadar, tapi berarti banget buat aku. Karena aku selalu merasa nyaman. Aku bersyukur dan bangga kenal kamu
+          </p>
+          <p>
+            Semoga di umur yang baru ini, semua yang kamu usahakan pelan-pelan
+            terwujud. Semoga kamu selalu sehat, rejeki, bahagia, dan dikelilingi
+            orang-orang yang sayang sama kamu. Kalau ada hari yang berat, ingat
+            ya, kamu nggak sendirian.
+          </p>
+          <p>
+            Maaf kalau aku belum sempurna, kadang masih ngeselin atau lupa hal
+            kecil dari kamu, yang padahal kamu selalu menginatnya. Tapi aku akan terus belajar jadi lebih baik buat kamu.
+          </p>
+          <p>
+            Sekali lagi, selamat ulang tahun. Aku bangga sama kamu, dan aku
+            bersyukur banget bisa kenal kamu. Love u more sayangku, i love you more than you know bidadariku💛
+          </p>
+          <p class="ttd">Dari kasihmu, al 💛</p>
+          <!-- ⬆⬆⬆ SAMPAI SINI ⬆⬆⬆ -->
+
+          <button class="btn next">Lihat kenangan kita →</button>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== TAHAP 4: GALERI ========== -->
+    <section class="scene" data-scene="3">
+      <div class="isi lebar">
+        <h2 class="judul">Galeri Kenangan 📸</h2>
+
+        <div class="galeri">
+          <figure class="polaroid r-kiri">
+            <div class="foto-box">
+              <img src="a9.jpeg" alt="Foto kenangan 1" onerror="this.style.display='none'">
+            </div>
+            <figcaption>Kamu Selalu Cantik #1</figcaption>
+          </figure>
+          <figure class="polaroid r-kanan">
+            <div class="foto-box">
+              <div class="placeholder">Taruh foto di sini 📷</div>
+              <img src="a8.jpeg" alt="Foto kenangan 2" onerror="this.style.display='none'">
+            </div>
+            <figcaption>Yang terbaik #2</figcaption>
+          </figure>
+          <figure class="polaroid r-kiri">
+            <div class="foto-box">
+              <div class="placeholder">Taruh foto di sini 📷</div>
+              <img src="a7.jpeg" alt="Foto kenangan 3" onerror="this.style.display='none'">
+            </div>
+            <figcaption>Kamu Indah #3</figcaption>
+          </figure>
+          <figure class="polaroid r-kanan">
+            <div class="foto-box">
+              <div class="placeholder">Taruh foto di sini 📷</div>
+              <img src="a6.jpeg" alt="Foto kenangan 4" onerror="this.style.display='none'">
+            </div>
+            <figcaption>Cintaku #4</figcaption>
+          </figure>
+           <figure class="polaroid r-kiri">
+            <div class="foto-box">
+              <div class="placeholder">Taruh foto di sini 📷</div>
+              <img src="a5.jpeg" alt="Foto kenangan 5" onerror="this.style.display='none'">
+            </div>
+            <figcaption>Cantikku #5</figcaption>
+          </figure>
+          <figure class="polaroid r-kanan">
+            <div class="foto-box">
+              <div class="placeholder">Taruh foto di sini 📷</div>
+              <img src="a4.jpeg" alt="Foto kenangan " onerror="this.style.display='none'">
+            </div>
+            <figcaption>Bidadariku ann #6</figcaption>
+          </figure>
+           <figure class="polaroid r-kiri">
+            <div class="foto-box">
+              <div class="placeholder">Taruh foto di sini 📷</div>
+              <img src="a3.jpeg" alt="Foto kenangan 3" onerror="this.style.display='none'">
+            </div>
+            <figcaption>Gemes banget sih #7</figcaption>
+          </figure>
+           <figure class="polaroid r-kiri">
+            <div class="foto-box">
+              <div class="placeholder">Taruh foto di sini 📷</div>
+              <img src="a2.jpeg" alt="Foto kenangan 3" onerror="this.style.display='none'">
+            </div>
+            <figcaption>Kamu Lucuu #8</figcaption>
+          </figure>
+          <figure class="polaroid r-kanan">
+            <div class="foto-box">
+              <div class="placeholder">Taruh foto di sini 📷</div>
+              <img src="a1.jpeg" alt="Foto kenangan 3" onerror="this.style.display='none'">
+            </div>
+            <figcaption>Lucu dari sananya #9</figcaption>
+        </div>
+
+        <button class="btn next">Satu lagi →</button>
+      </div>
+    </section>
+
+    <!-- ========== TAHAP 5: PENUTUP ========== -->
+    <section class="scene" data-scene="4">
+      <div class="isi">
+        <div class="tulip-row" aria-hidden="true">
+          <svg class="tulip t1"><use href="#tulip"/></svg>
+          <svg class="tulip t2"><use href="#tulip"/></svg>
+          <svg class="tulip t3"><use href="#tulip"/></svg>
+        </div>
+        <h2 class="judul">Sekali lagi, Selamat Ulang Tahun! 🎂</h2>
+        <div class="card">
+          <!-- Ganti teks penutup sesuai keinginanmu -->
+          <p>
+           Senoga segala niat baik kamu dikabulkan tahun ini. Kamu yang tetap menjadi ann periang, baik hati, dan selalu 
+           bikin semua orang senyum dan bercerita. Terimakasih atas segala usaha kamu selama ini ya sayang. Terus Tumbuh
+          </p>
+          <p class="terima-kasih">
+            Terima kasih sudah ada, dan terima kasih sudah jadi kamu, ann. 💛
+          </p>
+        </div>
+        <button class="btn ghost" id="ulang">↺ Ulangi dari awal</button>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="hujan" aria-hidden="true"></div>
+  <script>
+const scenes = Array.from(document.querySelectorAll('.scene'));
+const dotsEl = document.getElementById('dots');
+const hujan = document.getElementById('hujan');
+let sekarang = 0;
+
+/* ---------- titik progres ---------- */
+scenes.forEach(() => dotsEl.appendChild(document.createElement('span')));
+function updateDots() {
+  Array.from(dotsEl.children).forEach((d, i) => d.classList.toggle('on', i === sekarang));
+}
+
+/* ---------- pindah tahap ---------- */
+function pindah(n) {
+  if (n < 0 || n >= scenes.length) return;
+  bersihkanHujan();
+  scenes[sekarang].classList.remove('aktif');
+  sekarang = n;
+  scenes[sekarang].classList.add('aktif');
+  scenes[sekarang].scrollTop = 0;
+  window.scrollTo(0, 0);
+  updateDots();
+
+  // hujan tulip tiap masuk tahap penutup
+  if (n === scenes.length - 1) hujanTulip(25);
+}
+
+document.querySelectorAll('.next').forEach((btn) => {
+  btn.addEventListener('click', () => pindah(sekarang + 1));
+});
+
+/* ---------- hujan tulip ---------- */
+function buatTulip() {
+  const ukuran = 24 + Math.random() * 30;
+  const el = document.createElement('div');
+  el.className = 'tulip-jatuh';
+  el.style.width = ukuran + 'px';
+  el.style.height = ukuran * 2 + 'px';
+  el.style.left = Math.random() * 100 + 'vw';
+  el.style.animationDuration = 3 + Math.random() * 3 + 's';
+  el.innerHTML = '<svg viewBox="0 0 60 120" width="100%" height="100%"><use href="#tulip"/></svg>';
+  hujan.appendChild(el);
+  setTimeout(() => el.remove(), 6500);
+}
+let timerHujan = [];
+function hujanTulip(jumlah = 30) {
+  for (let i = 0; i < jumlah; i++) timerHujan.push(setTimeout(buatTulip, i * 80));
+}
+function bersihkanHujan() {
+  timerHujan.forEach(clearTimeout);
+  timerHujan = [];
+  hujan.innerHTML = '';
+}
+
+/* ---------- tahap 2: kado ---------- */
+const kado = document.getElementById('kado');
+const revealKado = document.getElementById('revealKado');
+const judulKado = document.getElementById('judulKado');
+const petunjukKado = document.getElementById('petunjukKado');
+
+kado.addEventListener('click', () => {
+  if (kado.classList.contains('buka')) return;
+  kado.classList.add('buka');
+  petunjukKado.hidden = true;
+  judulKado.textContent = 'Taraa! 🎉';
+  hujanTulip(40);
+  setTimeout(() => { revealKado.hidden = false; }, 700);
+});
+
+/* ---------- tahap 3: surat ---------- */
+const amplop = document.getElementById('amplop');
+const amplopWrap = document.getElementById('amplop-wrap');
+const surat = document.getElementById('surat');
+
+amplop.addEventListener('click', () => {
+  if (amplop.classList.contains('buka')) return;
+  amplop.classList.add('buka');
+  setTimeout(() => {
+    amplopWrap.hidden = true;
+    surat.hidden = false;
+    scenes[sekarang].scrollTop = 0;
+  }, 1000);
+});
+
+/* ---------- ulangi dari awal ---------- */
+document.getElementById('ulang').addEventListener('click', () => {
+  kado.classList.remove('buka');
+  revealKado.hidden = true;
+  petunjukKado.hidden = false;
+  judulKado.textContent = 'Ada kado buat kamu 🎁';
+  amplop.classList.remove('buka');
+  amplopWrap.hidden = false;
+  surat.hidden = true;
+  pindah(0);
+});
+
+updateDots();
+
+</script>
+</body>
+</html>
